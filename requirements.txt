@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 fastapi
 uvicorn
-=======
 torch
->>>>>>> main
+huggingface-hub

@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torchvision.transforms as transforms
 from PIL import Image
+from huggingface_hub import hf_hub_download
 
 class ResNet9(nn.Module):
     def __init__(self, in_channels, num_classes):
@@ -53,9 +54,14 @@ class_names = [
     'Tomato___Target_Spot', 'Tomato___Tomato_Yellow_Leaf_Curl_Virus', 'Tomato___Tomato_mosaic_virus', 'Tomato___healthy'
 ]
 
-def load_model(path, device):
+# Load model weights from Hugging Face Hub
+def load_model(device):
     model = ResNet9(in_channels=3, num_classes=len(class_names))
-    model.load_state_dict(torch.load(path, map_location=device))
+    model_path = hf_hub_download(
+        repo_id="kritimbista/my-model-weights",  # your HF model repo
+        filename="model_weights.pth"
+    )
+    model.load_state_dict(torch.load(model_path, map_location=device))
     model.to(device)
     model.eval()
     return model
