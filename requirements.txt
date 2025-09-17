@@ -1,0 +1,3 @@
+fastapi
+uvicorn
+torch   # if you used PyTorch
