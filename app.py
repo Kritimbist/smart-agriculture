@@ -1,63 +1,108 @@
-from fastapi import FastAPI, Request, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, File, UploadFile, Request, Form
+from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+import uvicorn
+import shutil
 import os
-from model import predict
 
-app = FastAPI(
-    title="ML Model API",
-    description="API for model predictions",
-    version="1.0.0"
-)
+# Import your model functions
+from model import load_model, get_prediction_from_path
 
-# Add CORS middleware to allow requests from your website
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Change to your website domain in production
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# -------------------------------
+# FastAPI app setup
+# -------------------------------
+app = FastAPI(title="🌿 Plant Disease Detection API")
 
-# API keys from environment variable
-API_KEYS = os.getenv("API_KEYS", "demo123").split(",")
+# Static files and templates
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
 
-@app.middleware("http")
-async def check_api_key(request: Request, call_next):
-    # Skip API key check for docs and health endpoints
-    if request.url.path in ["/", "/docs", "/openapi.json", "/health"]:
-        response = await call_next(request)
-        return response
-    
-    api_key = request.headers.get("x-api-key")
-    if api_key not in API_KEYS:
-        raise HTTPException(status_code=401, detail="Invalid API Key")
-    response = await call_next(request)
-    return response
+# Global model variable
+model = None
 
-@app.get("/")
-async def root():
-    return {
-        "message": "ML Model API is running",
-        "version": "1.0.0",
-        "endpoints": {
-            "predict": "/predict",
-            "health": "/health",
-            "docs": "/docs"
-        }
-    }
 
-@app.get("/health")
-async def health_check():
-    return {"status": "healthy"}
+# -------------------------------
+# Startup event
+# -------------------------------
+@app.on_event("startup")
+async def load_model_on_startup():
+    """Load the ML model from Hugging Face on startup."""
+    global model
+    hf_token = os.getenv("HF_TOKEN")  # optional: for private repos
+    model = load_model(token=hf_token)
+    print("✅ Model loaded successfully on startup")
 
-@app.post("/predict")
-async def get_prediction(data: dict):
+
+# -------------------------------
+# Routes
+# -------------------------------
+@app.get("/", response_class=HTMLResponse)
+async def read_root(request: Request):
+    """Serve the upload web interface."""
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.post("/predict", response_class=HTMLResponse)
+async def predict_image(request: Request, file: UploadFile = File(...)):
+    """Handle image upload and show prediction on web UI."""
     try:
-        result = predict(data)
-        return {"prediction": result}  # Fixed: Changed // to #
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        # Save uploaded file temporarily
+        upload_dir = "uploads"
+        os.makedirs(upload_dir, exist_ok=True)
+        file_path = os.path.join(upload_dir, file.filename)
 
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+
+        # Predict (returns label and confidence)
+        label, confidence = get_prediction_from_path(file_path, model)
+
+        # Delete temporary file
+        os.remove(file_path)
+
+        # Render result on same HTML page
+        return templates.TemplateResponse(
+            "index.html",
+            {
+                "request": request,
+                "prediction": label,
+                "confidence": f"{confidence * 100:.2f}%",
+            },
+        )
+
+    except Exception as e:
+        return templates.TemplateResponse(
+            "index.html",
+            {"request": request, "error": str(e)},
+            status_code=500,
+        )
+
+
+@app.post("/api/predict", response_class=JSONResponse)
+async def api_predict_image(file: UploadFile = File(...)):
+    """JSON API endpoint for prediction."""
+    try:
+        upload_dir = "uploads"
+        os.makedirs(upload_dir, exist_ok=True)
+        file_path = os.path.join(upload_dir, file.filename)
+
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+
+        label, confidence = get_prediction_from_path(file_path, model)
+
+        os.remove(file_path)
+        return JSONResponse(
+            content={"prediction": label, "confidence": round(confidence * 100, 2)}
+        )
+
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+
+
+# -------------------------------
+# Run the app (local testing)
+# -------------------------------
 if __name__ == "__main__":
-    import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
