@@ -2,6 +2,13 @@ pip>=24.0
 setuptools>=65.0.0
 wheel>=0.40.0
 fastapi
+uvicorn[standard]
+torch
+torchvision
+pillow
+huggingface_hub
+python-multipart
+jinja2fastapi
 uvicorn
 torch
 huggingface_hub
