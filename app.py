@@ -27,11 +27,7 @@ model = load_model()
 # -------------------------------
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-    return templates.TemplateResponse("index.html", {
-        "request": request,
-        "result": None,
-        "error": None
-    })
+    return templates.TemplateResponse("index.html", {"request": request, "result": None})
 
 
 @app.post("/predict", response_class=HTMLResponse)
@@ -41,7 +37,6 @@ async def predict_disease(request: Request, file: UploadFile = File(...)):
         upload_dir = "static/uploads"
         os.makedirs(upload_dir, exist_ok=True)
         file_path = os.path.join(upload_dir, file.filename)
-        
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
 
@@ -53,29 +48,12 @@ async def predict_disease(request: Request, file: UploadFile = File(...)):
         context = {
             "request": request,
             "result": result,
-            "image_path": "/" + file_path.replace("\\", "/"),
-            "error": None
+            "image_path": "/" + file_path.replace("\\", "/")
         }
         return templates.TemplateResponse("index.html", context)
 
     except Exception as e:
-        # Log the error
-        print(f"Error during prediction: {str(e)}")
-        import traceback
-        traceback.print_exc()
-        
-        return templates.TemplateResponse("index.html", {
-            "request": request,
-            "result": None,
-            "error": str(e),
-            "image_path": None
-        })
-
-
-@app.get("/health")
-async def health_check():
-    """Health check endpoint for deployment"""
-    return {"status": "healthy", "model_loaded": model is not None}
+        return templates.TemplateResponse("index.html", {"request": request, "error": str(e)})
 
 
 @app.get("/about")
