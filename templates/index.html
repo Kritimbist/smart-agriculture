@@ -3,32 +3,275 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plant Disease Detector</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <title>Plant Disease Detection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .upload-section {
+            text-align: center;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .file-label {
+            display: inline-block;
+            padding: 15px 30px;
+            background: #667eea;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .file-label:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .file-name {
+            margin-top: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .predict-btn {
+            margin-top: 20px;
+            padding: 15px 50px;
+            background: #48bb78;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .predict-btn:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(72, 187, 120, 0.3);
+        }
+
+        .predict-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-section {
+            margin-top: 30px;
+        }
+
+        .result-image {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 15px;
+            margin: 20px auto;
+            display: block;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .result-info {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .result-info h3 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .prediction-label {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .confidence {
+            font-size: 18px;
+            color: #48bb78;
+            margin-bottom: 20px;
+        }
+
+        .description, .remedy {
+            margin-bottom: 20px;
+        }
+
+        .description h4, .remedy h4 {
+            color: #2d3748;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .description p, .remedy p {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        .error {
+            background: #fed7d7;
+            color: #c53030;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>🌿 Plant Disease Detection</h1>
-        <form action="/predict" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" accept="image/*" required>
-            <button type="submit">Predict</button>
-        </form>
+        <div class="header">
+            <h1>🌿 Plant Disease Detection</h1>
+            <p>Upload a plant leaf image to detect diseases</p>
+        </div>
 
-        {% if result %}
-        <div class="result">
-            <h2>Prediction Result</h2>
-            <img src="{{ image_path }}" alt="Uploaded Image">
-            <p><strong>Label:</strong> {{ result.label }}</p>
-            <p><strong>Confidence:</strong> {{ '{:.2f}'.format(result.confidence * 100) }}%</p>
-            <p><strong>Description:</strong> {{ result.description }}</p>
-            <p><strong>Remedy:</strong> {{ result.remedy }}</p>
+        <div class="card">
+            <form method="post" action="/predict" enctype="multipart/form-data" id="uploadForm">
+                <div class="upload-section">
+                    <label for="file" class="file-label">
+                        📁 Choose File
+                    </label>
+                    <input type="file" name="file" id="file" accept="image/*" required>
+                    <div class="file-name" id="fileName">No file chosen</div>
+                    <button type="submit" class="predict-btn" id="predictBtn" disabled>
+                        🔍 Predict Disease
+                    </button>
+                </div>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p style="margin-top: 10px; color: #666;">Analyzing image...</p>
+                </div>
+            </form>
+
+            {% if error %}
+            <div class="error">
+                <strong>Error:</strong> {{ error }}
+            </div>
+            {% endif %}
+
+            {% if result %}
+            <div class="result-section">
+                {% if image_path %}
+                <img src="{{ image_path }}" alt="Uploaded Image" class="result-image">
+                {% endif %}
+
+                <div class="result-info">
+                    <div class="prediction-label">
+                        🌱 {{ result.label.replace('___', ' - ').replace('_', ' ') }}
+                    </div>
+                    <div class="confidence">
+                        Confidence: {{ "%.2f"|format(result.confidence * 100) }}%
+                    </div>
+
+                    <div class="description">
+                        <h4>📋 Description:</h4>
+                        <p>{{ result.description }}</p>
+                    </div>
+
+                    <div class="remedy">
+                        <h4>💊 Recommended Treatment:</h4>
+                        <p>{{ result.remedy }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
-        {% elif error %}
-        <div class="error">
-            <h3>Error:</h3>
-            <p>{{ error }}</p>
-        </div>
-        {% endif %}
     </div>
+
+    <script>
+        const fileInput = document.getElementById('file');
+        const fileName = document.getElementById('fileName');
+        const predictBtn = document.getElementById('predictBtn');
+        const uploadForm = document.getElementById('uploadForm');
+        const loading = document.getElementById('loading');
+
+        fileInput.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                fileName.textContent = e.target.files[0].name;
+                predictBtn.disabled = false;
+            } else {
+                fileName.textContent = 'No file chosen';
+                predictBtn.disabled = true;
+            }
+        });
+
+        uploadForm.addEventListener('submit', function() {
+            loading.classList.add('active');
+            predictBtn.disabled = true;
+        });
+    </script>
 </body>
 </html>
