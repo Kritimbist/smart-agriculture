@@ -1,21 +1,61 @@
-from fastapi import FastAPI, Request, HTTPException
+from fastapi import FastAPI, File, UploadFile, Request
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+import shutil
 import os
-from model import predict
 
-app = FastAPI()
+from model import load_model, predict
 
-# API keys from environment variable
-API_KEYS = os.getenv("API_KEYS", "demo123").split(",")
+# -------------------------------
+# FastAPI app setup
+# -------------------------------
+app = FastAPI(title="Plant Disease Detection")
 
-@app.middleware("http")
-async def check_api_key(request: Request, call_next):
-    api_key = request.headers.get("x-api-key")
-    if api_key not in API_KEYS:
-        raise HTTPException(status_code=401, detail="Invalid API Key")
-    response = await call_next(request)
-    return response
+# Mount static directory
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
-@app.post("/predict")
-async def get_prediction(data: dict):
-    result = predict(data)
-    return {"prediction": result}
+# Templates
+templates = Jinja2Templates(directory="templates")
+
+# Load model
+model = load_model()
+
+
+# -------------------------------
+# Routes
+# -------------------------------
+@app.get("/", response_class=HTMLResponse)
+async def home(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request, "result": None})
+
+
+@app.post("/predict", response_class=HTMLResponse)
+async def predict_disease(request: Request, file: UploadFile = File(...)):
+    try:
+        # Save uploaded file temporarily
+        upload_dir = "static/uploads"
+        os.makedirs(upload_dir, exist_ok=True)
+        file_path = os.path.join(upload_dir, file.filename)
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+
+        # Predict
+        with open(file_path, "rb") as img_file:
+            result = predict(img_file.read(), model)
+
+        # Prepare context for HTML
+        context = {
+            "request": request,
+            "result": result,
+            "image_path": "/" + file_path.replace("\\", "/")
+        }
+        return templates.TemplateResponse("index.html", context)
+
+    except Exception as e:
+        return templates.TemplateResponse("index.html", {"request": request, "error": str(e)})
+
+
+@app.get("/about")
+async def about():
+    return {"message": "Plant Disease Detection API with FastAPI"}

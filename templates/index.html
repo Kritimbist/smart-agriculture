@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Disease Detector</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🌿 Plant Disease Detection</h1>
+        <form action="/predict" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/*" required>
+            <button type="submit">Predict</button>
+        </form>
+
+        {% if result %}
+        <div class="result">
+            <h2>Prediction Result</h2>
+            <img src="{{ image_path }}" alt="Uploaded Image">
+            <p><strong>Label:</strong> {{ result.label }}</p>
+            <p><strong>Confidence:</strong> {{ '{:.2f}'.format(result.confidence * 100) }}%</p>
+            <p><strong>Description:</strong> {{ result.description }}</p>
+            <p><strong>Remedy:</strong> {{ result.remedy }}</p>
+        </div>
+        {% elif error %}
+        <div class="error">
+            <h3>Error:</h3>
+            <p>{{ error }}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
