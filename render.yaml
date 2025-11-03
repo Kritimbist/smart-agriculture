@@ -1,0 +1,29 @@
+---
+services:
+  - type: web
+    name: plant-disease-detection
+    env: python
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: HF_REPO_ID
+        value: kritimbista/my-model-weights
+      - key: HF_MODEL_FILENAME
+        value: model_weights.pth
+      - key: IMAGE_SIZE
+        value: 256
+
+# ==========================================
+# ALTERNATIVE: If not using render.yaml, 
+# Configure these in Render Dashboard:
+# ==========================================
+# Build Command: pip install -r requirements.txt
+# Start Command: uvicorn app:app --host 0.0.0.0 --port $PORT
+# 
+# Environment Variables:
+# HF_REPO_ID = kritimbista/my-model-weights
+# HF_MODEL_FILENAME = model_weights.pth
+# IMAGE_SIZE = 256
