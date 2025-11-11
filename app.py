@@ -1,5 +1,5 @@
 from fastapi import FastAPI, File, UploadFile, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import shutil
@@ -27,7 +27,13 @@ model = load_model()
 # -------------------------------
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request, "result": None})
+    """Home page with clean state - no results"""
+    return templates.TemplateResponse("index.html", {
+        "request": request,
+        "result": None,
+        "error": None,
+        "image_path": None
+    })
 
 
 @app.post("/predict", response_class=HTMLResponse)
@@ -48,12 +54,18 @@ async def predict_disease(request: Request, file: UploadFile = File(...)):
         context = {
             "request": request,
             "result": result,
-            "image_path": "/" + file_path.replace("\\", "/")
+            "image_path": "/" + file_path.replace("\\", "/"),
+            "error": None
         }
         return templates.TemplateResponse("index.html", context)
 
     except Exception as e:
-        return templates.TemplateResponse("index.html", {"request": request, "error": str(e)})
+        return templates.TemplateResponse("index.html", {
+            "request": request,
+            "result": None,
+            "error": str(e),
+            "image_path": None
+        })
 
 
 @app.get("/about")
