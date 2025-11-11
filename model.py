@@ -113,187 +113,192 @@ class_names = [
 # -----------------------------
 # Disease Info (Descriptions + Remedies)
 # -----------------------------
+# -*- coding: utf-8 -*-
+
+# disease_info.py (Full Nepali version, formal language)
+
 disease_info = {
-    # ---------------- Apple ----------------
+    # ---------------- स्याउ (Apple) ----------------
     "Apple___Apple_scab": {
-        "description": "Apple scab is a fungal disease caused by Venturia inaequalis. It produces dark, scabby lesions on leaves, fruit, and young twigs.",
-        "remedy": "Use resistant apple varieties, apply fungicides like captan or mancozeb, and remove fallen leaves to reduce fungal spores."
+        "description": "स्याउ स्क्याब Venturia inaequalis फफूंदीले हुने रोग हो। यसले पात, फल, र साना टहनीमा कालो र खुरदुरा दागहरू बनाउँछ।",
+        "remedy": "रोग प्रतिरोधी स्याउ प्रजाति रोप्नुहोस्, कैप्टान वा म्यान्कोसेब जस्ता फफूंदी नाशक प्रयोग गर्नुहोस्, र झरेका पातहरू हटाएर फफूंदीको बीउ कम गर्नुहोस्।"
     },
     "Apple___Black_rot": {
-        "description": "Black rot is caused by the fungus Botryosphaeria obtusa. It affects leaves, fruit, and bark, forming circular lesions and rotting fruit.",
-        "remedy": "Prune infected branches, burn fallen debris, and use fungicides such as thiophanate-methyl or copper-based sprays."
+        "description": "कालो गलन Botryosphaeria obtusa फफूंदीले हुने रोग हो। यसले पात, फल र छालामा वृत्ताकार दागहरू बनाउँछ र फल सडाउँछ।",
+        "remedy": "संक्रमित टहनी काटेर हटाउनुहोस्, झरेका पात जलाउनुहोस्, र थायोफेनेट-मेथिल वा तामा आधारित छिड़काव गर्नुहोस्।"
     },
     "Apple___Cedar_apple_rust": {
-        "description": "Cedar apple rust is caused by Gymnosporangium juniperi-virginianae. It forms orange, gelatinous spots on leaves and fruits.",
-        "remedy": "Remove nearby cedar trees if possible, apply fungicides during early spring, and grow resistant apple varieties."
+        "description": "सिडर स्याउ रस्ट Gymnosporangium juniperi-virginianae फफूंदीले हुने रोग हो। यसले पात र फलमा सुन्तला रंगका जेली जस्ता दागहरू बनाउँछ।",
+        "remedy": "सम्भव भए नजिकका सिडर रूख हटाउनुहोस्, वसन्तमा प्रारम्भिक फफूंदी नाशक छिड़काव गर्नुहोस्, र रोग प्रतिरोधी स्याउ प्रजाति रोप्नुहोस्।"
     },
     "Apple___healthy": {
-        "description": "This apple leaf is healthy and free from any disease or fungal infection.",
-        "remedy": "Continue proper irrigation, pruning, and nutrient management for optimal growth."
+        "description": "यो स्याउको पात स्वस्थ छ र कुनै रोग छैन।",
+        "remedy": "नियमित सिंचाइ, छाँटकाँट, र पोषण व्यवस्थापन जारी राख्नुहोस्।"
     },
 
-    # ---------------- Blueberry ----------------
+    # ---------------- ब्लूबेरी (Blueberry) ----------------
     "Blueberry___healthy": {
-        "description": "The blueberry plant shows no disease symptoms and appears vigorous and healthy.",
-        "remedy": "Maintain soil acidity, water regularly, and apply mulch to prevent weeds."
+        "description": "ब्लूबेरी बिरुवा स्वस्थ छ र रोगको कुनै संकेत देखिँदैन।",
+        "remedy": "माटोको अम्लीयता कायम राख्नुहोस्, नियमित पानी दिनुहोस्, र मल्च लगाएर झार–झार रोक्नुहोस्।"
     },
 
-    # ---------------- Cherry ----------------
+    # ---------------- चेरी (Cherry) ----------------
     "Cherry_(including_sour)___Powdery_mildew": {
-        "description": "Powdery mildew is a fungal disease causing white powder-like patches on cherry leaves and shoots.",
-        "remedy": "Prune overcrowded branches, improve air circulation, and apply sulfur or neem oil sprays."
+        "description": "पाउडरी मिल्ड्यू फफूंदी रोग हो जसले चेरीको पात र कांडमा सेतो पाउडर जस्ता दागहरू बनाउँछ।",
+        "remedy": "भीडभाड भएका टहनी काट्नुहोस्, हावा परिसंचरण सुधार गर्नुहोस्, र गन्धक वा निम तेलको छिड़काव गर्नुहोस्।"
     },
     "Cherry_(including_sour)___healthy": {
-        "description": "Cherry leaves are healthy, showing no fungal or bacterial infections.",
-        "remedy": "Ensure proper watering and fertilization; maintain clean surroundings to prevent pests."
+        "description": "चेरीका पात स्वस्थ छन्, कुनै फफूंदी वा ब्याक्टेरियल संक्रमण छैन।",
+        "remedy": "उचित पानी र मल दिनुहोस्; सरसफाइ कायम राख्नुहोस्।"
     },
 
-    # ---------------- Corn ----------------
+    # ---------------- मकै (Corn) ----------------
     "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot": {
-        "description": "Gray leaf spot is caused by Cercospora species, forming rectangular gray lesions on leaves.",
-        "remedy": "Rotate crops, use resistant hybrids, and apply fungicides like strobilurins when necessary."
+        "description": "ग्रे लीफ स्पट Cercospora जातिको फफूंदीले हुने रोग हो, जसले पातमा आयताकार खरानी दाग बनाउँछ।",
+        "remedy": "बाली घुमाउने गर्नुहोस्, रोग प्रतिरोधी हाइब्रिड प्रयोग गर्नुहोस्, र आवश्यक भए स्ट्रोबिलुरिन जस्ता फफूंदी नाशक छिड़काव गर्नुहोस्।"
     },
     "Corn_(maize)___Common_rust_": {
-        "description": "Common rust is caused by Puccinia sorghi. It shows reddish-brown pustules on leaves.",
-        "remedy": "Use resistant varieties and apply fungicides if rust severity increases."
+        "description": "कमन रस्ट Puccinia sorghi फफूंदीले हुने रोग हो। यसले पातमा रातो-खैरो पोथ्री जस्ता दागहरू बनाउँछ।",
+        "remedy": "प्रतिरोधी प्रजाति प्रयोग गर्नुहोस् र रोग बढे फफूंदी नाशक छिड़काव गर्नुहोस्।"
     },
     "Corn_(maize)___Northern_Leaf_Blight": {
-        "description": "Northern leaf blight is caused by Exserohilum turcicum, producing long gray lesions on leaves.",
-        "remedy": "Use resistant hybrids, rotate crops, and spray fungicides at early infection stages."
+        "description": "नर्दन लीफ ब्लाइट Exserohilum turcicum फफूंदीले हुने रोग हो, जसले पातमा लामो खरानी दाग बनाउँछ।",
+        "remedy": "प्रतिरोधी हाइब्रिड प्रयोग गर्नुहोस्, बाली घुमाउनुहोस्, र प्रारम्भिक चरणमा फफूंदी नाशक छिड़काव गर्नुहोस्।"
     },
     "Corn_(maize)___healthy": {
-        "description": "Corn leaves are green and healthy with no visible disease.",
-        "remedy": "Maintain proper nitrogen levels and irrigation for optimal yield."
+        "description": "मकैका पात हरियो र स्वस्थ छन्।",
+        "remedy": "उचित नाइट्रोजन स्तर र सिंचाइ कायम राख्नुहोस्।"
     },
 
-    # ---------------- Grape ----------------
+    # ---------------- अंगुर (Grape) ----------------
     "Grape___Black_rot": {
-        "description": "Black rot is a fungal disease caused by Guignardia bidwellii, producing black spots on leaves and shriveled fruit.",
-        "remedy": "Prune infected parts, improve air circulation, and apply fungicides like myclobutanil."
+        "description": "कालो गलन Guignardia bidwellii फफूंदीले हुने रोग हो, जसले पातमा कालो दाग र फल सुकाउँछ।",
+        "remedy": "संक्रमित भाग काट्नुहोस्, हावा परिसंचरण सुधार गर्नुहोस्, र माइक्लोब्युटानिल जस्ता फफूंदी नाशक छिड़काव गर्नुहोस्।"
     },
     "Grape___Esca_(Black_Measles)": {
-        "description": "Esca (Black Measles) causes black stripes and spots on leaves and fruit, eventually killing the vine.",
-        "remedy": "Remove and destroy infected vines, avoid wounding, and improve drainage."
+        "description": "एस्का (ब्ल्याक मिजल्स) रोगले पात र फलमा कालो रेखा र दागहरू बनाउँछ र बाइनलाई मर्न पुर्‍याउँछ।",
+        "remedy": "संक्रमित बाइन हटाउनुहोस् र जलाउनुहोस्, घाउ नहोस्, र पानी निकास सुधार गर्नुहोस्।"
     },
     "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)": {
-        "description": "Leaf blight caused by Pseudocercospora vitis results in angular brown leaf spots.",
-        "remedy": "Prune affected leaves and apply protective fungicides."
+        "description": "पात ब्लाइट Pseudocercospora vitis फफूंदीले हुने रोग हो, जसले पातमा खैरो कोणीय दाग बनाउँछ।",
+        "remedy": "संक्रमित पात काट्नुहोस् र सुरक्षात्मक फफूंदी नाशक प्रयोग गर्नुहोस्।"
     },
     "Grape___healthy": {
-        "description": "The grapevine is healthy with vibrant green leaves.",
-        "remedy": "Maintain balanced fertilization and proper pruning to enhance airflow."
+        "description": "अंगुरको बाइन स्वस्थ छ, पात हरियो र जीवन्त छन्।",
+        "remedy": "सन्तुलित मल र उचित छाँटकाँट गरेर हावा परिसंचरण सुधार गर्नुहोस्।"
     },
 
-    # ---------------- Orange ----------------
+    # ---------------- सुन्तला (Orange) ----------------
     "Orange___Haunglongbing_(Citrus_greening)": {
-        "description": "Citrus greening (HLB) is caused by Candidatus Liberibacter bacteria, leading to yellow shoots and misshapen fruit.",
-        "remedy": "Remove infected trees, control psyllid vectors, and plant disease-free seedlings."
+        "description": "सिट्रस ग्रिनिङ (HLB) Candidatus Liberibacter ब्याक्टेरियाले हुने रोग हो, जसले हरा-पीला सिसाहरू र विकृत फल बनाउँछ।",
+        "remedy": "संक्रमित रूख हटाउनुहोस्, सायलिड कीरा नियन्त्रण गर्नुहोस्, र रोगरहित बीउ प्रयोग गर्नुहोस्।"
     },
 
-    # ---------------- Peach ----------------
+    # ---------------- पीच (Peach) ----------------
     "Peach___Bacterial_spot": {
-        "description": "Bacterial spot is caused by Xanthomonas campestris, leading to black lesions on leaves and fruit.",
-        "remedy": "Apply copper-based bactericides and avoid overhead irrigation."
+        "description": "ब्याक्टेरियल स्पट Xanthomonas campestris द्वारा हुने रोग हो, जसले पात र फलमा कालो दाग बनाउँछ।",
+        "remedy": "तामा आधारित ब्याक्टेरिसाइड प्रयोग गर्नुहोस् र माथि पानी दिने सिंचाइबाट बच्नुहोस्।"
     },
     "Peach___healthy": {
-        "description": "Peach leaves are healthy and disease-free.",
-        "remedy": "Maintain good soil drainage and use resistant cultivars."
+        "description": "पीचका पात स्वस्थ छन्, रोगरहित छन्।",
+        "remedy": "राम्रो माटोको निकास सुनिश्चित गर्नुहोस् र रोग प्रतिरोधी प्रजाति प्रयोग गर्नुहोस्।"
     },
 
-    # ---------------- Pepper ----------------
+    # ---------------- खुर्सानी (Pepper, bell) ----------------
     "Pepper,_bell___Bacterial_spot": {
-        "description": "Bacterial spot in bell pepper is caused by Xanthomonas species, forming dark water-soaked spots.",
-        "remedy": "Use certified seeds, rotate crops, and apply copper fungicides as preventive measures."
+        "description": "बेल खुर्सानीमा ब्याक्टेरियल स्पट Xanthomonas जातिको कारणले हुने रोग हो, जसले गाढा दाग बनाउँछ।",
+        "remedy": "प्रमाणित बीउ प्रयोग गर्नुहोस्, बाली घुमाउनुहोस्, र रोकथामका लागि तामा आधारित फफूंदी नाशक छिड़काव गर्नुहोस्।"
     },
     "Pepper,_bell___healthy": {
-        "description": "The bell pepper plant is healthy and free of bacterial or fungal infection.",
-        "remedy": "Maintain proper watering and pest management."
+        "description": "बेल खुर्सानी स्वस्थ छ, कुनै रोग छैन।",
+        "remedy": "उचित पानी र कीरा नियन्त्रण कायम राख्नुहोस्।"
     },
 
-    # ---------------- Potato ----------------
+    # ---------------- आलु (Potato) ----------------
     "Potato___Early_blight": {
-        "description": "Early blight is caused by Alternaria solani, producing concentric brown rings on leaves.",
-        "remedy": "Use disease-free seeds, rotate crops, and apply fungicides such as chlorothalonil."
+        "description": "अर्ली ब्लाइट Alternaria solani फफूंदीले हुने रोग हो, जसले पातमा वृत्ताकार खैरो घेराहरू बनाउँछ।",
+        "remedy": "रोगरहित बीउ प्रयोग गर्नुहोस्, बाली घुमाउनुहोस्, र क्लोरोथालोनिल जस्ता फफूंदी नाशक प्रयोग गर्नुहोस्।"
     },
     "Potato___Late_blight": {
-        "description": "Late blight is caused by Phytophthora infestans, leading to dark lesions on leaves and tubers.",
-        "remedy": "Avoid wet conditions, use resistant varieties, and apply fungicides like metalaxyl."
+        "description": "लेट ब्लाइट Phytophthora infestans फफूंदीले हुने रोग हो, जसले पात र आलुको भागमा कालो दाग बनाउँछ।",
+        "remedy": "भिजेको अवस्था टार्नुहोस्, प्रतिरोधी प्रजाति प्रयोग गर्नुहोस्, र मेटालाक्सिल जस्ता फफूंदी नाशक छिड़काव गर्नुहोस्।"
     },
     "Potato___healthy": {
-        "description": "The potato plant is healthy with no visible blight or disease symptoms.",
-        "remedy": "Maintain proper hilling and watering practices."
+        "description": "आलु स्वस्थ छ, कुनै रोग वा ब्लाइट छैन।",
+        "remedy": "उचित हिलिङ र पानी व्यवस्थापन कायम राख्नुहोस्।"
     },
 
-    # ---------------- Raspberry ----------------
+    # ---------------- रास्पबेरी (Raspberry) ----------------
     "Raspberry___healthy": {
-        "description": "Raspberry plant appears healthy with no visible diseases.",
-        "remedy": "Ensure proper pruning and air circulation to prevent fungal infections."
+        "description": "रास्पबेरी स्वस्थ छ, कुनै रोग छैन।",
+        "remedy": "उचित छाँटकाँट गर्नुहोस् र हावा परिसंचरण सुनिश्चित गर्नुहोस्।"
     },
 
-    # ---------------- Soybean ----------------
+    # ---------------- सोयाबिन (Soybean) ----------------
     "Soybean___healthy": {
-        "description": "Soybean plants show no signs of disease and appear vigorous.",
-        "remedy": "Rotate crops and control weeds to maintain plant health."
+        "description": "सोयाबिन स्वस्थ छ, कुनै रोगको संकेत छैन।",
+        "remedy": "बाली घुमाउनुहोस् र झार–झार नियन्त्रण गर्नुहोस्।"
     },
 
-    # ---------------- Squash ----------------
+    # ---------------- स्क्वाश (Squash) ----------------
     "Squash___Powdery_mildew": {
-        "description": "Powdery mildew appears as white powdery spots on leaves and stems of squash.",
-        "remedy": "Remove infected leaves, improve ventilation, and apply sulfur-based fungicides."
+        "description": "पाउडरी मिल्ड्यू पात र कांडमा सेतो पाउडर जस्ता दाग बनाउँछ।",
+        "remedy": "संक्रमित पात हटाउनुहोस्, हावा परिसंचरण सुधार गर्नुहोस्, र गन्धक आधारित फफूंदी नाशक छिड़काव गर्नुहोस्।"
     },
 
-    # ---------------- Strawberry ----------------
+    # ---------------- स्ट्रबेरी (Strawberry) ----------------
     "Strawberry___Leaf_scorch": {
-        "description": "Leaf scorch causes reddish-brown spots on strawberry leaves, eventually leading to withering.",
-        "remedy": "Remove infected leaves, avoid overhead watering, and use resistant cultivars."
+        "description": "लीफ स्कोर्चले पातमा रातो–खैरो दाग बनाउँछ र अन्ततः पात मर्न जान्छ।",
+        "remedy": "संक्रमित पात हटाउनुहोस्, माथि पानीबाट बच्नुहोस्, र रोग प्रतिरोधी प्रजाति प्रयोग गर्नुहोस्।"
     },
     "Strawberry___healthy": {
-        "description": "The strawberry plant is healthy with lush green leaves.",
-        "remedy": "Ensure proper sunlight and spacing to prevent fungal growth."
+        "description": "स्ट्रबेरी स्वस्थ छ, पात हरियो र तन्दुरुस्त छन्।",
+        "remedy": "पर्याप्त सूर्यप्रकाश र दूरी कायम गर्नुहोस्।"
     },
 
-    # ---------------- Tomato ----------------
+    # ---------------- टमाटर (Tomato) ----------------
     "Tomato___Bacterial_spot": {
-        "description": "Bacterial spot is caused by Xanthomonas species, creating small dark lesions on leaves and fruit.",
-        "remedy": "Use disease-free seeds, copper sprays, and rotate crops regularly."
+        "description": "ब्याक्टेरियल स्पट Xanthomonas जातिले पात र फलमा साना कालो दाग बनाउँछ।",
+        "remedy": "रोगरहित बीउ प्रयोग गर्नुहोस्, तामा स्प्रे गर्नुहोस्, र बाली घुमाउनुहोस्।"
     },
     "Tomato___Early_blight": {
-        "description": "Early blight is caused by Alternaria solani, leading to concentric dark rings on older leaves.",
-        "remedy": "Prune infected leaves, improve air circulation, and use chlorothalonil-based fungicides."
+        "description": "अर्ली ब्लाइट Alternaria solani फफूंदीले पुराना पातमा घेराबद्ध खैरो दाग बनाउँछ।",
+        "remedy": "संक्रमित पात काट्नुहोस्, हावा परिसंचरण सुधार गर्नुहोस्, र क्लोरोथालोनिल फफूंदी नाशक प्रयोग गर्नुहोस्।"
     },
     "Tomato___Late_blight": {
-        "description": "Late blight caused by Phytophthora infestans forms large water-soaked spots on leaves and fruit.",
-        "remedy": "Avoid overhead watering, destroy infected plants, and apply systemic fungicides."
+        "description": "लेट ब्लाइट Phytophthora infestans फफूंदीले पात र फलमा ठूला पानी–सिक्त दाग बनाउँछ।",
+        "remedy": "माथि पानीबाट बच्नुहोस्, संक्रमित बिरुवा नष्ट गर्नुहोस्, र प्रणालीगत फफूंदी नाशक प्रयोग गर्नुहोस्।"
     },
     "Tomato___Leaf_Mold": {
-        "description": "Leaf mold is caused by Passalora fulva, forming yellow patches on the upper leaf surface.",
-        "remedy": "Improve ventilation, reduce humidity, and apply copper-based fungicides."
+        "description": "पात मोल्ड Passalora fulva फफूंदीले पातको माथिल्लो भागमा पहेँलो दाग बनाउँछ।",
+        "remedy": "हावा परिसंचरण सुधार्नुहोस्, आर्द्रता कम गर्नुहोस्, र तामा आधारित फफूंदी नाशक छिड़काव गर्नुहोस्।"
     },
     "Tomato___Septoria_leaf_spot": {
-        "description": "Septoria leaf spot causes numerous small circular spots with gray centers.",
-        "remedy": "Remove infected leaves, avoid wet foliage, and use fungicides such as mancozeb."
+        "description": "सेप्टोरिया लीफ स्पटले साना वृत्ताकार दाग बनाउँछ, केन्द्र खरानी हुन्छ।",
+        "remedy": "संक्रमित पात हटाउनुहोस्, पात सुक्खा राख्नुहोस्, र म्यान्कोसेब जस्ता फफूंदी नाशक प्रयोग गर्नुहोस्।"
     },
     "Tomato___Spider_mites Two-spotted_spider_mite": {
-        "description": "Spider mites cause yellow stippling and webbing on leaves, leading to leaf drop.",
-        "remedy": "Spray neem oil or insecticidal soap and maintain humidity to deter mites."
+        "description": "स्पाइडर माइटले पातमा पहेँलो–खैरो धब्बा र जाल बनाउँछ, जसले पात झर्न सक्छ।",
+        "remedy": "निम तेल वा कीट नाशक साबुन छिड़काव गर्नुहोस् र आर्द्रता कायम गर्नुहोस्।"
     },
     "Tomato___Target_Spot": {
-        "description": "Target spot, caused by Corynespora cassiicola, produces target-like concentric lesions.",
-        "remedy": "Remove infected leaves, rotate crops, and apply preventive fungicides."
+        "description": "टार्गेट स्पट Corynespora cassiicola फफूंदीले लक्ष्य–जस्तो घेराबद्ध दाग बनाउँछ।",
+        "remedy": "संक्रमित पात हटाउनुहोस्, बाली घुमाउनुहोस्, र रोकथामका लागि फफूंदी नाशक छिड़काव गर्नुहोस्।"
     },
     "Tomato___Tomato_Yellow_Leaf_Curl_Virus": {
-        "description": "This viral disease causes upward curling of leaves and stunted growth.",
-        "remedy": "Control whitefly vectors, remove infected plants, and use resistant hybrids."
+        "description": "यस भाइरल रोगले पात माथि ताने जस्तो मोडिन्छ र बिरुवा झन् स–छोटो हुन्छ।",
+        "remedy": "ह्वाइटफ्लाई नियन्त्रण गर्नुहोस्, संक्रमित बिरुवा हटाउनुहोस्, र रोग प्रतिरोधी प्रजाति प्रयोग गर्नुहोस्।"
     },
     "Tomato___Tomato_mosaic_virus": {
-        "description": "TMV causes mosaic-like mottling and deformation of tomato leaves.",
-        "remedy": "Avoid handling plants after tobacco use, disinfect tools, and use resistant varieties."
+        "description": "TMV ले पातमा मोजाइक जस्तो धब्बा र विकृति ल्याउँछ।",
+        "remedy": "तम्बाकू प्रयोग पछि बिरुवा छोएन, उपकरण सफा गर्नुहोस्, र प्रतिरोधी प्रजाति प्रयोग गर्नुहोस्।"
     },
     "Tomato___healthy": {
-        "description": "The tomato plant is healthy, showing no signs of disease.",
-        "remedy": "Maintain consistent watering and nutrient balance to prevent stress."
-    },
+        "description": "टमाटर स्वस्थ छ, कुनै रोग छैन।",
+        "remedy": "नियमित पानी र पोषणको सन्तुलन कायम राख्नुहोस्।"
+    }
 }
+
 
 
 # -----------------------------
