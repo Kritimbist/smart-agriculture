@@ -3,32 +3,393 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plant Disease Detector</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <title>PlantCare AI - Disease Detection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background elements */
+        .bg-leaf {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .leaf1 { top: 10%; left: 10%; width: 60px; animation-delay: 0s; }
+        .leaf2 { top: 70%; right: 15%; width: 80px; animation-delay: 3s; }
+        .leaf3 { bottom: 20%; left: 20%; width: 70px; animation-delay: 6s; }
+        .leaf4 { top: 40%; right: 30%; width: 50px; animation-delay: 9s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(10deg); }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 50px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            border-radius: 20px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        h1 {
+            color: #2d3748;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 16px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        .upload-area {
+            border: 3px dashed #cbd5e0;
+            border-radius: 20px;
+            padding: 50px 30px;
+            text-align: center;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-area:hover {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #edf2f7 0%, #e6fffa 100%);
+            transform: translateY(-2px);
+        }
+
+        .upload-area.dragover {
+            border-color: #43e97b;
+            background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
+            transform: scale(1.02);
+        }
+
+        .upload-area.has-file {
+            border-color: #43e97b;
+            background: linear-gradient(135deg, #e6fffa 0%, #d4f8e8 100%);
+        }
+
+        .upload-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .upload-text {
+            color: #4a5568;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .upload-subtext {
+            color: #a0aec0;
+            font-size: 14px;
+        }
+
+        .file-name {
+            display: none;
+            margin-top: 15px;
+            color: #43e97b;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            margin-top: 20px;
+            display: none;
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.5);
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 30px;
+            background: linear-gradient(135deg, #e6fffa 0%, #b2f5ea 100%);
+            border-radius: 20px;
+            border-left: 5px solid #43e97b;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .result h2 {
+            color: #2d3748;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .result img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .result p {
+            color: #4a5568;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .result strong {
+            color: #2d3748;
+            font-weight: 700;
+        }
+
+        .confidence {
+            display: inline-block;
+            background: #43e97b;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .error {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+            border-radius: 15px;
+            border-left: 5px solid #fc8181;
+            animation: slideIn 0.5s ease;
+        }
+
+        .error h3 {
+            color: #c53030;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .error p {
+            color: #742a2a;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+
+            .result, .error {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Floating leaf decorations -->
+    <div class="bg-leaf leaf1">🌿</div>
+    <div class="bg-leaf leaf2">🍃</div>
+    <div class="bg-leaf leaf3">🌱</div>
+    <div class="bg-leaf leaf4">🌿</div>
+
     <div class="container">
-        <h1>🌿 Plant Disease Detection</h1>
-        <form action="/predict" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" accept="image/*" required>
-            <button type="submit">Predict</button>
+        <div class="header">
+            <div class="logo">🌱</div>
+            <h1>🌿 Plant Disease Detection</h1>
+            <p class="subtitle">Upload a plant image to detect diseases instantly</p>
+        </div>
+
+        <form action="/predict" method="post" enctype="multipart/form-data" id="uploadForm">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📸</div>
+                <div class="upload-text">Drop your image here or click to browse</div>
+                <div class="upload-subtext">Supports JPG, PNG, WEBP (Max 10MB)</div>
+                <div class="file-name" id="fileName"></div>
+                <input type="file" name="file" id="fileInput" accept="image/*" required>
+            </div>
+            <button type="submit" id="submitBtn">🔍 Analyze Plant Health</button>
         </form>
 
         {% if result %}
-        <div class="result">
-            <h2>Prediction Result</h2>
+        <div class="result" id="resultSection">
+            <h2>✅ Analysis Complete</h2>
             <img src="{{ image_path }}" alt="Uploaded Image">
-            <p><strong>Label:</strong> {{ result.label }}</p>
-            <p><strong>Confidence:</strong> {{ '{:.2f}'.format(result.confidence * 100) }}%</p>
+            <p><strong>Detected:</strong> {{ result.label }}</p>
+            <p><strong>Confidence:</strong> <span class="confidence">{{ '{:.2f}'.format(result.confidence * 100) }}%</span></p>
             <p><strong>Description:</strong> {{ result.description }}</p>
             <p><strong>Remedy:</strong> {{ result.remedy }}</p>
+            <button type="button" id="newAnalysisBtn" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 15px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 20px;">🔄 Analyze Another Plant</button>
         </div>
         {% elif error %}
-        <div class="error">
-            <h3>Error:</h3>
+        <div class="error" id="errorSection">
+            <h3>⚠️ Error</h3>
             <p>{{ error }}</p>
+            <button type="button" id="tryAgainBtn" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 15px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 20px;">🔄 Try Again</button>
         </div>
         {% endif %}
     </div>
+
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileName = document.getElementById('fileName');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Handle "Analyze Another Plant" button click
+        const newAnalysisBtn = document.getElementById('newAnalysisBtn');
+        const tryAgainBtn = document.getElementById('tryAgainBtn');
+        
+        if (newAnalysisBtn) {
+            newAnalysisBtn.addEventListener('click', () => {
+                window.location.href = '/';
+            });
+        }
+        
+        if (tryAgainBtn) {
+            tryAgainBtn.addEventListener('click', () => {
+                window.location.href = '/';
+            });
+        }
+
+        // Click to upload
+        uploadArea.addEventListener('click', () => fileInput.click());
+
+        // Drag and drop
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                fileInput.files = e.dataTransfer.files;
+                displayFileName(file.name);
+            }
+        });
+
+        // File input change
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                displayFileName(file.name);
+            }
+        });
+
+        function displayFileName(name) {
+            fileName.textContent = `📁 ${name}`;
+            fileName.style.display = 'block';
+            submitBtn.style.display = 'block';
+            uploadArea.classList.add('has-file');
+        }
+    </script>
 </body>
 </html>
